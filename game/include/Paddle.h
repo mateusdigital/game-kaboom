@@ -53,7 +53,7 @@ private:
     struct AnimationInfo
     {
         Lore::Sprite                 sprite;
-        std::vector<Lore::Rectangle> frames;
+        std::vector<Rectangle> frames;
         int                          frameIndex;
         CoreClock::Clock             timer;
 
@@ -97,7 +97,7 @@ public:
     // Actions //
 public:
     void kill();
-    bool checkCollision(const Lore::Rectangle &rect);
+    bool checkCollision(const Rectangle &rect);
 
 
     // Private Methods //
@@ -114,7 +114,7 @@ private:
     //HouseKeeping
     Lore::Vector2   m_basePosition;
     Lore::Vector2   m_speed;
-    Lore::Rectangle m_hitBox;
+    Rectangle m_hitBox;
 
     int m_lives;
 

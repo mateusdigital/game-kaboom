@@ -39,7 +39,12 @@
 //----------------------------------------------------------------------------//
 
 //C
-#include <dlfcn.h>
+#ifdef _WIN32
+#include <direct.h>
+#define getcwd _getcwd
+#elif defined(__APPLE__) || defined(__linux__) || defined(__ANDROID__)
+#include <unistd.h>
+#endif
 //std
 #include <sstream>
 #include <vector>
@@ -115,23 +120,12 @@ void checkAllAssetsFiles()
     }
 }
 
-
-std::vector<std::string> getAssetsPaths()
-{
-    std::vector<std::string> paths = {
-        "./assets",
-        "/usr/local/share/amazingcow_game_kaboom/assets"
-    };
-
-    return paths;
-}
-
-
+#if WIN32
+int SDL_main(int argc, char* argv[])
+#else
 int main()
+#endif
 {
-    // //Before all check if we have the .so files.
-    // checkSharedObjectFiles();
-
     Lore::ErrorControl::DieMode = Lore::ErrorControl::LORE_ERROR_DIE_ON_ALL_ERRORS;
 
     auto winMgr    = Lore::WindowManager::instance();
@@ -150,8 +144,13 @@ int main()
 
     //Init the AssetsManager and check if all
     //required assets are present.
-    assetsMgr->initialize(getAssetsPaths());
-    checkAllAssetsFiles  ();
+    char current_path[2048];
+    getcwd(current_path, sizeof(current_path));
+
+    auto search_path = std::string(current_path) + "/assets/";
+
+    assetsMgr->initialize(search_path);
+    checkAllAssetsFiles();
 
     //Set the Window Icon.
     winMgr->setIcon("kaboom_icon.png");

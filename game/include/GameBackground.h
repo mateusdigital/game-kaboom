@@ -64,8 +64,8 @@ public:
 
      // iVars //
 private:
-    Lore::Color m_skyColor;
-    Lore::Color m_groundColor;
+    Color m_skyColor;
+    Color m_groundColor;
 };
 
 NS_GAMEKABOOM_END

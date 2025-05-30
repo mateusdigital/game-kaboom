@@ -166,7 +166,7 @@ void Bomber::makeLoseTurn()
 //Position / Movement
 void Bomber::setInitialPosition(int x, int y)
 {
-    m_initialPosition.x = x - m_sprite.getBounds().getWidth() / 2;
+    m_initialPosition.x = x - m_sprite.getBounds().w / 2;
     m_initialPosition.y = y + kBodyOffsetY;
 
     m_sprite.setOrigin(Lore::ITransformable::OriginHelpers::BottomLeft());
@@ -176,7 +176,7 @@ void Bomber::setInitialPosition(int x, int y)
 void Bomber::setMovementBounds(int min, int max)
 {
     m_minBounds = min;
-    m_maxBounds = max - m_sprite.getBounds().getWidth();
+    m_maxBounds = max - m_sprite.getBounds().w;
 }
 
 
@@ -216,17 +216,20 @@ void Bomber::initSprites()
 
     //Get the Frame Properties.
     auto rect   = m_sprite.getSourceRectangle();
-    auto frameW = rect.getWidth () / kSpriteFrames;
-    auto frameH = rect.getHeight();
+    auto frameW = rect.w  / kSpriteFrames;
+    auto frameH = rect.h;
 
     //Create the Frames Rectangles.
     m_spriteFrames.reserve(kSpriteFrames);
 
     for(int i = 0; i < kSpriteFrames; ++i)
     {
-        m_spriteFrames.push_back(
-            Lore::Rectangle(i * frameW, 0, frameW, frameH)
-        );
+        Rectangle r = {};
+        r.x = i * frameW;
+        r.y = 0;
+        r.w = frameW;
+        r.h = frameH;
+        m_spriteFrames.push_back(r);
     }
 
     //Set the initial frame.

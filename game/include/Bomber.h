@@ -114,7 +114,7 @@ private:
 private:
     //Sprite / Animation
     Lore::Sprite                 m_sprite;
-    std::vector<Lore::Rectangle> m_spriteFrames;
+    std::vector<Rectangle> m_spriteFrames;
     int                          m_frameIndex;
 
     //Movement / Bounds

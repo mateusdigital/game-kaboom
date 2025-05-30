@@ -69,7 +69,7 @@ private:
 private:
     Lore::Sprite     m_sprite;
     Lore::Text       m_text;
-    Lore::Color      m_targetColor;
+    Color      m_targetColor;
     CoreClock::Clock m_timer;
 
     bool m_updateColors;

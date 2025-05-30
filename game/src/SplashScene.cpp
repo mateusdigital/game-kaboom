@@ -54,7 +54,13 @@ USING_NS_GAMEKABOOM
 ////////////////////////////////////////////////////////////////////////////////
 SplashScene::SplashScene()
 {
-    Lore::WindowManager::instance()->setClearColor(Lore::Color::White());
+    Color c;
+    c.r = 255;
+    c.g = 255;
+    c.b = 255;
+    c.a = 255;
+
+    Lore::WindowManager::instance()->setClearColor(c);
 
     initSprites();
     initTimers ();
@@ -104,31 +110,36 @@ void SplashScene::draw()
 void SplashScene::initSprites()
 {
     auto gm = Lore::GameManager::instance();
-    auto winCenter = Lore::WindowManager::instance()->getWindowRect().getCenter();
+    auto win_rect = Lore::WindowManager::instance()->getWindowRect();
 
     //Color
-    m_targetColor = Lore::Color(
-                        gm->getRandomNumber(0, 255),
-                        gm->getRandomNumber(0, 255),
-                        gm->getRandomNumber(0, 255)
-                    );
-
+    Color c;
+    m_targetColor.r = gm->getRandomNumber(0, 255);
+    m_targetColor.r = gm->getRandomNumber(0, 255);
+    m_targetColor.r = gm->getRandomNumber(0, 255);
+    
     //Sprite
     m_sprite.loadTexture("AmazingCow_Logo_Big.png");
-    m_sprite.setOrigin(Lore::ITransformable::OriginHelpers::TopCenter());
-    m_sprite.setPosition(
-        Lore::Vector2::OffsetBy(winCenter, 0, -m_sprite.getBounds().getHeight())
+    m_sprite.setOrigin(Lore::ITransformable::OriginHelpers::Center());
+	m_sprite.setPosition(
+		(win_rect.w * 0.5),
+		(win_rect.h * 0.5) - 50        
     );
 
     //Text
     m_text.loadFont(kFontName, kFontSize_AmazingCowLogoText);
+    m_text.setOrigin(Lore::ITransformable::OriginHelpers::Center());
     m_text.setString("amazing cow labs");
-    m_text.setOrigin(Lore::ITransformable::OriginHelpers::TopCenter());
     m_text.setPosition(
-        winCenter.x,
-        m_sprite.getBounds().getBottom() + 20
+        (win_rect.w * 0.5),
+        (win_rect.h * 0.5) + 50
     );
-    m_text.setForegroundColor(Lore::Color::Black());
+
+    {
+        Color c = {};
+        c.a = 255;
+        m_text.setForegroundColor(c);
+    }
 
 
     //Others

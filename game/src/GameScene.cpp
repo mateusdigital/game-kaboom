@@ -171,33 +171,35 @@ void GameScene::initBombs()
 
 void GameScene::initTexts()
 {
-    auto winRect = Lore::WindowManager::instance()->getWindowRect();
+    auto win_rect = Lore::WindowManager::instance()->getWindowRect();
 
+	auto win_center = Lore::Vector2(win_rect.w * 0.5, win_rect.h * 0.5);
     //Status Text
     initHelper_Text(m_statusText,
                     kFontName, kFontSize_StatusText,
                     "Paused",
                     Lore::ITransformable::OriginHelpers::Center(),
-                    winRect.getCenter());
+                    win_center);
     m_statusText.setIsVisible(false);
 
     //Score Text
+    auto win_top_left = Lore::Vector2(win_rect.w * 0, win_rect.h * 0);
     initHelper_Text(
         m_scoreText,
         kFontName, kFontSize_ScoreText,
         CoreGame::StringUtils::format(kStringFormat_Score, 0),
         Lore::ITransformable::OriginHelpers::TopLeft(),
-        winRect.getTopLeft() + Lore::Vector2(kGameScene_TextOffset)
+        win_top_left + Lore::Vector2(kGameScene_TextOffset)
     );
 
     //Turn Text
+    auto win_top_right = Lore::Vector2(win_rect.w * 1, win_rect.h * 0.0);
     initHelper_Text(
         m_turnText,
         kFontName, kFontSize_TurnText,
         CoreGame::StringUtils::format(kStringFormat_Level, 0),
         Lore::ITransformable::OriginHelpers::TopRight(),
-        winRect.getTopRight() +
-            Lore::Vector2(-kGameScene_TextOffset, kGameScene_TextOffset)
+        win_top_right + Lore::Vector2(-kGameScene_TextOffset, kGameScene_TextOffset)
     );
 
 
@@ -307,12 +309,12 @@ void GameScene::resetTurn()
     updateTurnNumberText();
 
     //COWTODO: Create this correctly.
-    TurnInfo turnInfo {
-        .turnNumber  = m_turnNumber,
-        .bombsCount  =   5 + (m_turnNumber *  5),
-        .bombSpeed   = 200 + (m_turnNumber * 20),
-        .bomberSpeed = 200 + (m_turnNumber * 30),
-    };
+    TurnInfo turnInfo{};
+    turnInfo.turnNumber = m_turnNumber;
+        turnInfo.bombsCount  =   5 + (m_turnNumber *  5);
+        turnInfo.bombSpeed   = 200 + (m_turnNumber * 20);
+        turnInfo.bomberSpeed = 200 + (m_turnNumber * 30);
+    
 
     //Reset the game objects for this level.
     m_bombManager.reset(turnInfo);
@@ -418,7 +420,6 @@ void GameScene::initHelper_Text(Lore::Text &text,
 {
     text.loadFont          (fontName, fontSize  );
     text.setString         (str                 );
-    text.setForegroundColor(Lore::Color::White());
     text.setOrigin         (origin              );
     text.setPosition       (position            );
 }

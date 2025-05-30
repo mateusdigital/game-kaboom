@@ -61,34 +61,21 @@ GameBackground::GameBackground()
 void GameBackground::draw()
 {
     //COWTODO: Clean this up.
-    auto winMgr   = Lore::WindowManager::instance();
+    auto winMgr = Lore::WindowManager::instance();
     auto renderer = winMgr->getRenderer();
 
-    SDL_Rect skyRect = {
-                0,
-                0,
-                winMgr->getWindowWidth(),
-                kSize_SkyHeight
-             };
+    //
+    SDL_SetRenderDrawColor(renderer, m_skyColor.r, m_skyColor.g, m_skyColor.b, m_skyColor.a);
+    SDL_RenderFillRect(renderer, nullptr);
 
+    //
+    SDL_SetRenderDrawColor(renderer, m_groundColor.r, m_groundColor.g, m_groundColor.b, m_groundColor.a);
     SDL_Rect groundRect = {
-                0,
-                kSize_SkyHeight,
-                winMgr->getWindowWidth(),
-                winMgr->getWindowHeight() - kSize_SkyHeight
-            };
-
-
-    SDL_SetRenderDrawColor(renderer, m_skyColor.r,
-                                     m_skyColor.g,
-                                     m_skyColor.b,
-                                     m_skyColor.a);
-    SDL_RenderFillRect(renderer, &skyRect);
-
-    SDL_SetRenderDrawColor(renderer, m_groundColor.r,
-                                     m_groundColor.g,
-                                     m_groundColor.b,
-                                     m_groundColor.a);
+        0,
+        kSize_SkyHeight,
+        winMgr->getWindowWidth(),
+        winMgr->getWindowHeight() - kSize_SkyHeight
+    };
     SDL_RenderFillRect(renderer, &groundRect);
 }
 
@@ -96,17 +83,26 @@ void GameBackground::explode()
 {
     auto gm = Lore::GameManager::instance();
 
-    m_skyColor.setRGBA(gm->getRandomNumber(0, 255),
-                       gm->getRandomNumber(0, 255),
-                       gm->getRandomNumber(0, 255));
+    m_skyColor.r = gm->getRandomNumber(0, 255);
+    m_skyColor.g = gm->getRandomNumber(0, 255);
+    m_skyColor.b = gm->getRandomNumber(0, 255);
+    m_skyColor.a = 0xFF;
 
-    m_groundColor.setRGBA(gm->getRandomNumber(0, 255),
-                          gm->getRandomNumber(0, 255),
-                          gm->getRandomNumber(0, 255));
+    m_groundColor.r = gm->getRandomNumber(0, 255);
+    m_groundColor.g = gm->getRandomNumber(0, 255);
+    m_groundColor.b = gm->getRandomNumber(0, 255);
+    m_groundColor.a = 0xFF;
 }
 
 void GameBackground::setNormalColor()
 {
-    m_skyColor.setRGBA   (0x70, 0x92, 0xBE);
-    m_groundColor.setRGBA(0x52, 0x7E, 0x2D);
+    m_skyColor.r = 0x70;
+    m_skyColor.g = 0x92;
+    m_skyColor.b = 0xBE;
+    m_skyColor.a = 0xFF;
+
+    m_groundColor.r = 0x52;
+    m_groundColor.g = 0x7E;
+    m_groundColor.b = 0x2D;
+    m_groundColor.a = 0xFF;
 }

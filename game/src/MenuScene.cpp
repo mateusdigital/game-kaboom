@@ -111,58 +111,46 @@ void MenuScene::draw()
 ////////////////////////////////////////////////////////////////////////////////
 void MenuScene::initStuff()
 {
-    auto winRect   = Lore::WindowManager::instance()->getWindowRect();
-    auto winCenter = winRect.getCenter();
-
+    auto win_rect = Lore::WindowManager::instance()->getWindowRect();
 
     //Title Text
+    m_titleBottom.loadFont(kFontName, kFontSize_TitleText);
+    m_titleBottom.setOrigin(Lore::ITransformable::OriginHelpers::Center());
+    m_titleBottom.setForegroundColor({});
+    m_titleBottom.setPosition( win_rect.w * 0.5f, win_rect.h * 0.15f + 8);
+    m_titleBottom.setString("Kaboom!");
+
     m_titleTop.loadFont(kFontName, kFontSize_TitleText);
     m_titleTop.setOrigin(Lore::ITransformable::OriginHelpers::Center());
-    m_titleTop.setPosition(
-        Lore::Vector2::OffsetBy(winCenter, 0, -220)
-    );
+    m_titleTop.setPosition( win_rect.w * 0.5f, win_rect.h * 0.15f );
     m_titleTop.setString("Kaboom!");
-
-    m_titleBottom.loadFont(kFontName, kFontSize_TitleText);
-    m_titleBottom.setOrigin(m_titleTop.getOrigin());
-    m_titleBottom.setPosition(
-            Lore::Vector2::OffsetBy(m_titleTop.getPosition(), 0, 5)
-    );
-    m_titleBottom.setString("Kaboom!");
-    m_titleBottom.setForegroundColor(Lore::Color::Black());
-
 
     //Play Text
     m_playText.loadFont(kFontName, kFontSize_PlayCreditsText);
+    m_playText.setOrigin(Lore::ITransformable::OriginHelpers::Center());
     m_playText.setString("Play");
-    m_playText.setPosition(
-        winCenter.x - (m_playText.getBounds().getWidth() / 2),
-        winCenter.y - 50
-    );
-
+    m_playText.setPosition( win_rect.w * 0.5f, win_rect.h * 0.5f);
 
     //Credits Text
     m_creditsText.loadFont(kFontName, kFontSize_PlayCreditsText);
+    m_creditsText.setOrigin(Lore::ITransformable::OriginHelpers::Center());
     m_creditsText.setString("Credits");
     m_creditsText.setPosition(
-        Lore::Vector2::OffsetBy(m_playText.getPosition(), 0, 80)
-    );
-
+        win_rect.w * 0.5f,
+        win_rect.h * 0.5f + m_creditsText.getBounds().h + 20);
 
     //AmazingCow
     m_amazingcowText.loadFont(kFontName, kFontSize_AmazingCowText);
     m_amazingcowText.setString("amazing cow labs - 2016, 2017");
-    m_amazingcowText.setPosition(winCenter.x, winRect.getHeight() - 20);
-    m_amazingcowText.setOrigin(Lore::ITransformable::OriginHelpers::BottomCenter());
-
+    m_amazingcowText.setOrigin(Lore::ITransformable::OriginHelpers::Center());
+    m_amazingcowText.setPosition(win_rect.w * 0.5, win_rect.h - 20);
 
     //Bomb
-    TurnInfo info {
-        .turnNumber  = 0,
-        .bombsCount  = 0,
-        .bombSpeed   = 0,
-        .bomberSpeed = 0
-    };
+    TurnInfo info{};
+    info.turnNumber  = 0;
+    info.bombsCount  = 0;
+    info.bombSpeed   = 0;
+    info.bomberSpeed = 0;
 
     m_bomb.reset(info);
     m_bomb.startDropping();
@@ -197,13 +185,13 @@ void MenuScene::changeSelection(int delta, bool playSound)
         Lore::SoundManager::instance()->playEffect(kSoundName_MenuSelect);
 
     m_selectionIndex = newSelection;
-    auto position    = (m_selectionIndex == 0)
-                        ? m_playText.getPosition   ()
-                        : m_creditsText.getPosition();
-
+    auto text = (m_selectionIndex == 0) ? &m_playText : &m_creditsText;
+    auto position = text->getPosition();
+    auto size = text->getBounds();
+    auto bomb_size = m_bomb.getHitBox();
     m_bomb.setPosition(
-        Lore::Vector2::OffsetBy(position, -60, -5)
-    );
+        position.x - size.w * 0.5f - bomb_size.w * 0.5f - 40,
+        position.y - size.h * 0.5f - 5);
 }
 
 void MenuScene::onBombExplode()

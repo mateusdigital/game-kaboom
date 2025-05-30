@@ -58,7 +58,7 @@ private:
     {
         std::string name;
         Lore::Sprite                  sprite;
-        std::vector<Lore::Rectangle>  framesVec;
+        std::vector<Rectangle>  framesVec;
         int                           frameIndex;
         CoreClock::Clock              timer;
 
@@ -124,6 +124,7 @@ public:
     // Setters //
 public:
     void setPosition(const Lore::Vector2 &pos);
+    void setPosition(float x, float y);
     void setMovementBounds(int maxY);
 
     void setOnReachTargetCallback    (const ReachTargetCallback     &callback);
@@ -133,7 +134,7 @@ public:
     // Getters //
 public:
     const Lore::Vector2& getPosition() const;
-    const Lore::Rectangle& getHitBox() const;
+    const Rectangle& getHitBox() const;
 
     State getState() const;
 
@@ -155,7 +156,7 @@ private:
     //HouseKeeping
     TurnInfo        m_turnInfo;
     State           m_state;
-    Lore::Rectangle m_hitBox;
+    Rectangle m_hitBox;
 
     //Sprite / Animation
     AnimationInfo  m_aliveAnimation;

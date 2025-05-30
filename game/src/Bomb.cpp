@@ -63,7 +63,6 @@ Bomb::Bomb() :
     //HouseKeeping
     //m_turnInfo - Set in reset.
     m_state(Bomb::State::Dead),
-    m_hitBox(Lore::Rectangle::Empty()),
     //Sprite / Animation
     //m_aliveAnimation     - Initialized in InitAnimations
     //m_explodingAnimation - Initialized in InitAnimations
@@ -168,7 +167,16 @@ void Bomb::kill()
 void Bomb::setPosition(const Lore::Vector2 &pos)
 {
     m_pos = pos;
-    m_hitBox.setLocation(m_pos);
+    m_hitBox.x = m_pos.getX();
+    m_hitBox.y = m_pos.getY();
+}
+
+void Bomb::setPosition(float x, float y)
+{
+    m_pos.x = x;
+    m_pos.y = y;
+    m_hitBox.x = x;
+    m_hitBox.y = y;
 }
 
 void Bomb::setMovementBounds(int maxY)
@@ -196,7 +204,7 @@ const Lore::Vector2& Bomb::getPosition() const
     return m_pos;
 }
 
-const Lore::Rectangle& Bomb::getHitBox() const
+const Rectangle& Bomb::getHitBox() const
 {
     return m_hitBox;
 }
@@ -229,7 +237,9 @@ void Bomb::initAnimations()
     m_pCurrentAnimation = &m_aliveAnimation;
 
     //Set the hit box.
-    m_hitBox.setSize(m_pCurrentAnimation->framesVec[0].getSize());
+    auto s = m_pCurrentAnimation->framesVec[0];
+	m_hitBox.w = s.w;
+    m_hitBox.h = s.h;
 }
 
 void Bomb::initTimers()
@@ -260,8 +270,8 @@ void Bomb::onAliveAnimationTimerTick()
 
 void Bomb::onExplodingAnimationTimerTick()
 {
-    auto gameMgr     = Lore::GameManager::instance();
-    auto framesCount = m_pCurrentAnimation->framesVec.size() -1;
+    auto gameMgr = Lore::GameManager::instance();
+    auto framesCount = m_pCurrentAnimation->framesVec.size() - 1;
 
     auto r = gameMgr->getRandomNumber(0, 255);
     auto g = gameMgr->getRandomNumber(0, 255);
@@ -269,7 +279,13 @@ void Bomb::onExplodingAnimationTimerTick()
 
     auto frameIndex = gameMgr->getRandomNumber(0, framesCount);
 
-    m_pCurrentAnimation->sprite.setColor(Lore::Color(r, g, b));
+    Color c = {};
+    c.r = r;
+    c.g = g;
+    c.b = b; 
+    c.a = 255;
+
+    m_pCurrentAnimation->sprite.setColor(c);
     m_pCurrentAnimation->changeFrame(frameIndex);
 }
 
@@ -351,18 +367,21 @@ void Bomb::AnimationInfo::setupFrames(const std::string &spriteName,
 
     //Get the Frame Properties.
     auto rect   = sprite.getSourceRectangle();
-    auto frameW = rect.getWidth () / framesCount;
-    auto frameH = rect.getHeight();
+    auto frameW = rect.w / framesCount;
+    auto frameH = rect.h;
 
     //Create the Frames Rectangles.
     framesVec.reserve(framesCount);
 
     for(int i = 0; i < framesCount; ++i)
     {
-        framesVec.push_back(
-            Lore::Rectangle(i * frameW, 0,
-                            frameW, frameH)
-        );
+        Rectangle r;
+        r.x = i * frameW;
+        r.y = 0;
+        r.w = frameW;
+        r.h = frameH;
+
+        framesVec.push_back(r);
     }
 
     frameIndex = 0;

@@ -48,7 +48,7 @@ USING_NS_GAMEKABOOM;
 ////////////////////////////////////////////////////////////////////////////////
 // Constants                                                                  //
 ////////////////////////////////////////////////////////////////////////////////
-constexpr int   kInitialLivesCount   = 3;
+constexpr int   kInitialLivesCount   = 1;
 constexpr int   kPaddleOffsetY       = 55;
 constexpr int   kFramesCount         = 4;
 constexpr float kAnimationInterval   = 0.1;
@@ -60,8 +60,7 @@ constexpr float kAnimationInterval   = 0.1;
 Paddle::Paddle() :
     //HouseKeeping
     m_basePosition(Lore::Vector2::Zero()),
-    m_speed       (Lore::Vector2::Zero()),
-    m_hitBox      (Lore::Rectangle::Empty()),
+    m_speed       (Lore::Vector2::Zero()),    
     m_lives       (kInitialLivesCount),
     //Movement
     m_maxX(0),
@@ -105,14 +104,14 @@ void Paddle::draw()
 ////////////////////////////////////////////////////////////////////////////////
 void Paddle::setInitialPosition(int x, int y)
 {
-    m_basePosition.x = x - m_spritesInfoVec[0].frames[0].getWidth() / 2;
+    m_basePosition.x = x - m_spritesInfoVec[0].frames[0].w / 2;
     m_basePosition.y = y;
 }
 
 void Paddle::setMovementBounds(int min, int max)
 {
     m_minX = min;
-    m_maxX = max - m_spritesInfoVec[0].frames[0].getWidth();
+    m_maxX = max - m_spritesInfoVec[0].frames[0].w;
 }
 
 
@@ -138,12 +137,17 @@ void Paddle::kill()
     --m_lives;
 }
 
-bool Paddle::checkCollision(const Lore::Rectangle &rect)
+bool Paddle::checkCollision(const Rectangle &rect)
 {
     for(int i = 0; i < m_lives; ++i)
     {
         auto paddleRect = m_spritesInfoVec[i].sprite.getBounds();
-        if(paddleRect.intersects(rect))
+		auto result = SDL_IntersectRect(
+			&paddleRect,
+			&rect,
+			&paddleRect
+		);
+        if(result)
         {
             m_spritesInfoVec[i].start();
             return true;
@@ -165,20 +169,20 @@ void Paddle::initSprites()
     //Init the sprite and frames.
     Lore::Sprite sprite("Paddle.png");
     auto spriteBounds = sprite.getBounds();
-    auto frameWidth   = spriteBounds.getWidth() / kFramesCount;
-    auto frameHeight  = spriteBounds.getHeight();
+    auto frameWidth   = spriteBounds.w / kFramesCount;
+    auto frameHeight  = spriteBounds.h;
 
-    std::vector<Lore::Rectangle> framesVec;
+    std::vector<Rectangle> framesVec;
     framesVec.reserve(kFramesCount);
 
     for(int i = 0; i < kFramesCount; ++i)
     {
-        framesVec.push_back(
-            Lore::Rectangle(i * frameWidth,
-                            0,
-                            frameWidth,
-                            frameHeight)
-        );
+        Rectangle r = {};
+        r.x = i * frameWidth;
+        r.y = 0;
+        r.w = frameWidth;
+        r.h = frameHeight;
+        framesVec.push_back(r);
     }
 
 

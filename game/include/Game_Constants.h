@@ -51,7 +51,7 @@ constexpr auto kFontName_Credits = "SourceCodePro-Regular.ttf";
 //Splash Scene
 constexpr int kFontSize_AmazingCowLogoText = 30;
 //Menu Scene
-constexpr int kFontSize_TitleText        = 100;
+constexpr int kFontSize_TitleText        = 60;
 constexpr int kFontSize_PlayCreditsText  = 40;
 constexpr int kFontSize_AmazingCowText   = 20;
 //Game Scene

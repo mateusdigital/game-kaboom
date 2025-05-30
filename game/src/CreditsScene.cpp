@@ -54,7 +54,13 @@ USING_NS_GAMEKABOOM;
 ////////////////////////////////////////////////////////////////////////////////
 CreditsScene::CreditsScene()
 {
-    Lore::WindowManager::instance()->setClearColor(Lore::Color::White());
+    Color c;
+    c.r = 255;
+    c.g = 255;
+    c.b = 255;
+    c.a = 255;
+
+    Lore::WindowManager::instance()->setClearColor(c);
     initStuff();
 }
 
@@ -88,19 +94,20 @@ void CreditsScene::draw()
 ////////////////////////////////////////////////////////////////////////////////
 void CreditsScene::initStuff()
 {
-    auto winRect   = Lore::WindowManager::instance()->getWindowRect();
-    auto winCenter = winRect.getCenter();
-    auto gm        = Lore::GameManager::instance();
+    auto win_rect = Lore::WindowManager::instance()->getWindowRect();
+    auto gm = Lore::GameManager::instance();
 
     //Sprite
     m_logo.loadTexture("AmazingCow_Logo_Small.png");
-    m_logo.setPosition(winCenter.x, 20);
+    m_logo.setPosition(win_rect.w * 0.5, 20);
     m_logo.setOrigin(Lore::ITransformable::OriginHelpers::TopCenter());
-    m_logo.setColor(
-        Lore::Color(gm->getRandomNumber(0, 255),
-                    gm->getRandomNumber(0, 255),
-                    gm->getRandomNumber(0, 255))
-    );
+
+    Color c = {};
+    c.r = gm->getRandomNumber(0, 255);
+    c.g = gm->getRandomNumber(0, 255);
+    c.b = gm->getRandomNumber(0, 255);
+    c.a = 255;
+    m_logo.setColor(c);
 
 
     //Message
@@ -141,8 +148,13 @@ void CreditsScene::initStuff()
         auto &text = m_textsVec.back();
 
         text.setString(msg[i]);
-        text.setPosition(winCenter.x, startOffset + (i * lineOffset));
+        text.setPosition(win_rect.w * 0.5, startOffset + (i * lineOffset));
         text.setOrigin(Lore::ITransformable::OriginHelpers::TopCenter());
-        text.setForegroundColor(Lore::Color::Black());
+        Color c;
+        c.r = 0;
+        c.g = 0;
+        c.b = 0;
+        c.a = 255;
+        text.setForegroundColor(c);
     }
 }
