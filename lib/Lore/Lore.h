@@ -43,7 +43,6 @@
 
 
 #include "./include/AssetsManager.h"
-#include "./include/Color.h"
 #include "./include/ErrorControl.h"
 #include "./include/Font.h"
 #include "./include/GameManager.h"
@@ -54,7 +53,6 @@
 #include "./include/IUpdatable.h"
 #include "./include/Lore_Utils.h"
 #include "./include/MathHelper.h"
-#include "./include/Rectangle.h"
 #include "./include/Scene.h"
 #include "./include/SDLHelpers.h"
 #include "./include/SoundManager.h"

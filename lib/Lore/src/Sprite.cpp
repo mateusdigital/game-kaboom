@@ -49,9 +49,7 @@ USING_NS_LORE
 // CTOR //
 Sprite::Sprite() :
     m_pTexture   (nullptr),
-    m_textureRect(Rectangle::Empty()),
-    m_flip       (Texture::Flip::None),
-    m_color      (Color::White())
+    m_flip       (Texture::Flip::None)
 {
     //Empty...
 }
@@ -149,8 +147,11 @@ void Sprite::setSourceRectangle(const Rectangle &srcRect /* = Rectangle::Empty()
     m_textureRect = srcRect;
 
     //Set to whole texture.
-    if(m_textureRect.isEmpty())
-        m_textureRect.setSize(m_pTexture->getTextureSize());
+    if (m_textureRect.w == 0 && m_textureRect.h == 0) {
+        auto size = m_pTexture->getTextureSize();
+        m_textureRect.w = size.getX();
+        m_textureRect.h = size.getY();
+    }
 }
 
 const Rectangle& Sprite::getSourceRectangle() const
@@ -161,5 +162,14 @@ const Rectangle& Sprite::getSourceRectangle() const
 //Bounds
 Rectangle Sprite::getBounds() const
 {
-    return Rectangle(getPosition(), m_textureRect.getSize());
+    Rectangle r;
+    auto p = getPosition();
+    auto s = m_textureRect;
+	
+    r.x = p.x;
+    r.y = p.y;
+    r.w = s.w;
+    r.h = s.h;
+
+    return r;
 }

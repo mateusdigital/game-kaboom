@@ -59,14 +59,18 @@ Text::Text() :
     //Font / Texture
     m_pFont          (nullptr),
     m_pCurrentTexture(nullptr),
-    m_textureRect    (Lore::Rectangle::Empty()),
     //Flip
-    m_flip(Texture::Flip::None),
-    //Colors
-    m_fgColor(Color::White      ()),
-    m_bgColor(Color::Transparent())
+    m_flip(Texture::Flip::None)
 {
     //Empty...
+    m_fgColor.r = 255;
+    m_fgColor.g = 255;
+    m_fgColor.b = 255;
+    m_fgColor.a = 255;
+    m_bgColor.r = 255;
+    m_bgColor.g = 255;
+    m_bgColor.b = 255;
+    m_bgColor.a = 0;
 }
 
 Text::Text(const std::string &filename, int size) :
@@ -83,12 +87,13 @@ void Text::draw()
     if(!getIsVisible() || !m_pCurrentTexture)
         return;
 
+
     m_pCurrentTexture->draw(m_textureRect,
                             getBounds  (),
                             getRotation(),
                             getOrigin  (),
                             m_flip,
-                            Color::White());
+                            m_fgColor);
 }
 
 //String
@@ -157,7 +162,16 @@ void Text::loadFont(const std::string &filename, int size)
 //Bounds
 Rectangle Text::getBounds() const
 {
-    return Rectangle(getPosition(), m_textureRect.getSize());
+    auto p = getPosition();
+    auto s = m_textureRect;
+
+    Rectangle r;
+    r.x = p.getX();
+    r.y = p.getY();
+    r.w = s.w;
+    r.h = s.h;
+
+    return r;
 }
 
 // Private Methods //
@@ -167,7 +181,8 @@ void Text::calculate()
     if(m_string.empty())
     {
         m_pCurrentTexture = nullptr;
-        m_textureRect     = Lore::Rectangle::Empty();
+        m_textureRect.w = 0;
+        m_textureRect.h = 0;
     }
     else
     {
@@ -175,6 +190,8 @@ void Text::calculate()
                                                     m_fgColor,
                                                     m_bgColor);
 
-        m_textureRect.setSize(m_pCurrentTexture->getTextureSize());
+        auto s = m_pCurrentTexture->getTextureSize();
+        m_textureRect.w = s.getX();
+        m_textureRect.h = s.getY();
     }
 }

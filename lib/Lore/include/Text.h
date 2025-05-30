@@ -45,11 +45,9 @@
 #include <string>
 //Lore
 #include "Lore_Utils.h"
-#include "Color.h"
 #include "Font.h"
 #include "IDrawable.h"
 #include "ITransformable.h"
-#include "Rectangle.h"
 #include "Texture.h"
 
 
@@ -94,16 +92,16 @@ private:
     // iVars //
 private:
     //String
-    std::string m_string;
+    std::string m_string = {};
     //Font / Texture
-    Font::SPtr    m_pFont;
-    std::unique_ptr<Texture> m_pCurrentTexture;
-    Rectangle     m_textureRect;
+    Font::SPtr    m_pFont = nullptr;
+    std::unique_ptr<Texture> m_pCurrentTexture = nullptr;
+    Rectangle     m_textureRect = {};
     //Flip
-    Texture::Flip m_flip;
+    Texture::Flip m_flip = Texture::Flip::None;
     //Colors
-    Color m_fgColor;
-    Color m_bgColor;
+    Color m_fgColor = {};
+    Color m_bgColor = {};
 };
 
 NS_LORE_END

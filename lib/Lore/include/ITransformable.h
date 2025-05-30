@@ -43,7 +43,6 @@
 
 //Lore
 #include "Lore_Utils.h"
-#include "Rectangle.h"
 #include "Vector2.h"
 
 

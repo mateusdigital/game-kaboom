@@ -57,8 +57,15 @@ void WindowManager::initialize(const std::string &caption,
                                Uint32 rendererFlags)
 {
     //Set the vars.
-    m_designRect = Rectangle(0, 0, designWidth, designHeight);
-    m_windowRect = Rectangle(0, 0, windowWidth, windowHeight);
+    m_designRect.x = 0; 
+    m_designRect.y = 0;
+    m_designRect.w = designWidth;
+    m_designRect.h = designHeight;
+
+    m_windowRect.x = 0; 
+    m_windowRect.y = 0; 
+    m_windowRect.w = windowWidth;
+    m_windowRect.h = windowHeight;
 
 
     //COWTODO: Check the errors...
@@ -69,14 +76,15 @@ void WindowManager::initialize(const std::string &caption,
     m_pWindow = SDL_CreateWindow(caption.c_str(),
                                  SDL_WINDOWPOS_CENTERED,
                                  SDL_WINDOWPOS_CENTERED,
-                                 m_windowRect.getSize().x,
-                                 m_windowRect.getSize().y,
+                                 m_windowRect.w,
+                                 m_windowRect.h,
                                  windowFlags);
 
     //Renderer
     m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, rendererFlags);
 
-    setClearColor(Color::Black());
+    Color c = {};
+    setClearColor(c);
 }
 
 void WindowManager::shutdown()
@@ -112,12 +120,12 @@ const Rectangle& WindowManager::getDesignRect() const
 
 int WindowManager::getDesignWidth() const
 {
-    return m_designRect.getWidth();
+    return m_designRect.w;
 }
 
 int WindowManager::getDesignHeight() const
 {
-    return m_designRect.getHeight();
+    return m_designRect.h;
 }
 
 //Window Size
@@ -128,12 +136,12 @@ const Rectangle& WindowManager::getWindowRect() const
 
 int WindowManager::getWindowWidth() const
 {
-    return m_windowRect.getWidth();
+    return m_windowRect.w;
 }
 
 int WindowManager::getWindowHeight() const
 {
-    return m_windowRect.getHeight();
+    return m_windowRect.h;
 }
 
 //Clear color

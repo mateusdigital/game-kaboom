@@ -45,8 +45,6 @@
 #include <string>
 //Lore
 #include "Lore_Utils.h"
-#include "Color.h"
-#include "Rectangle.h"
 #include "Vector2.h"
 
 
@@ -77,8 +75,8 @@ public:
 
     // Public Methods //
 public:
-    void draw(const Rectangle &srcRect,
-              const Rectangle &dstRect,
+    void draw(Rectangle srcRect,
+              Rectangle dstRect,
               float angle,
               const Vector2 &origin,
               Flip  flip,

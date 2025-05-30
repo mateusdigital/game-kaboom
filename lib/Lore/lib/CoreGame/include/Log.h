@@ -73,8 +73,8 @@ public:
 
     enum class Output
     {
-        stdout = 1 << 0,
-        stderr = 1 << 1,
+        std_out = 1 << 0,
+        std_err = 1 << 1,
         file   = 1 << 2,
     };
 

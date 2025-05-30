@@ -83,7 +83,7 @@ public:
     COREGAME_SINGLETON_OF(SoundManager);
     COREGAME_DISALLOW_COPY_MOVE_ASSIGNS(SoundManager);
 private:
-    SoundManager() {};
+    SoundManager() =default;
 
 
     // Init / Shutdown //

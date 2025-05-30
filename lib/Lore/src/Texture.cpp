@@ -130,20 +130,18 @@ Texture::~Texture()
 }
 
 // Public Methods //
-void Texture::draw(const Rectangle &srcRect,
-                   const Rectangle &dstRect,
+void Texture::draw(Rectangle srcRect,
+                   Rectangle dstRect,
                    float angle,
                    const Vector2 &origin,
                    Flip  flip,
                    const Color &color)
 {
     //Turn the Lore types to SDL types...
-    auto sdl_srcRect = SDLHelpers::make_rect(srcRect);
-    auto sdl_dstRect = SDLHelpers::make_rect(dstRect);
-
     //Origin is in range of [0, 1].
-    auto sdl_origin = SDLHelpers::make_point(origin.getX() * srcRect.getWidth (),
-                                             origin.getY() * srcRect.getHeight());
+	SDL_Point sdl_origin;
+	sdl_origin.x = static_cast<int>(origin.getX() * srcRect.w);
+	sdl_origin.y = static_cast<int>(origin.getY() * srcRect.h);
 
 
     COREGAME_ASSERT_ARGS(
@@ -157,9 +155,9 @@ void Texture::draw(const Rectangle &srcRect,
 
     auto sdl_flip = static_cast<SDL_RendererFlip>(flip);
 
-    //Offset the position.
-    sdl_dstRect.x -= sdl_origin.x;
-    sdl_dstRect.y -= sdl_origin.y;
+    //Offset the position.a
+    dstRect.x -= sdl_origin.x;
+    dstRect.y -= sdl_origin.y;
 
     //Set the tint color.
     SDL_SetTextureColorMod(m_pSDL_Texture, color.r, color.g, color.b);
@@ -168,8 +166,8 @@ void Texture::draw(const Rectangle &srcRect,
     SDL_RenderCopyEx(
         renderer,
         m_pSDL_Texture,
-        &sdl_srcRect,
-        &sdl_dstRect,
+        &srcRect,
+        &dstRect,
         angle,
         &sdl_origin,
         sdl_flip

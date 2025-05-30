@@ -63,7 +63,7 @@ public:
     COREGAME_SINGLETON_OF(InputManager);
     COREGAME_DISALLOW_COPY_MOVE_ASSIGNS(InputManager);
 private:
-    InputManager() {};
+    InputManager() = default;
 
 
     // Init / Shutdown //

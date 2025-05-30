@@ -60,6 +60,8 @@
 #include "CoreRandom.h"
 #include "CoreClock.h"
 
+#define Color SDL_Color
+#define Rectangle SDL_Rect
 
 NS_LORE_BEGIN
 

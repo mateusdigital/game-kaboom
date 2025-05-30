@@ -94,7 +94,7 @@ Log::Log()
     addLogType(Type::Debug3);
     addLogType(Type::Debug4);
 
-    addLogOutput(Output::stdout);
+    addLogOutput(Output::std_out);
 }
 
 Log::~Log()
@@ -157,11 +157,11 @@ void Log::log(Type type, const std::string &str)
         return;
 
     //Check for cout.
-    if(isLogOutputActive(Output::stdout))
+    if(isLogOutputActive(Output::std_out))
         logAt(type, std::cout, str);
 
     //Check for cerr.
-    if(isLogOutputActive(Output::stderr))
+    if(isLogOutputActive(Output::std_err))
         logAt(type, std::cerr, str);
 
     //Check for file and if file is open.

@@ -43,8 +43,6 @@
 
 //Lore
 #include "Lore_Utils.h"
-#include "Color.h"
-#include "Rectangle.h"
 
 
 NS_LORE_BEGIN
@@ -56,7 +54,7 @@ public:
     COREGAME_SINGLETON_OF(WindowManager);
     COREGAME_DISALLOW_COPY_MOVE_ASSIGNS(WindowManager);
 private:
-    WindowManager() {};
+    WindowManager() = default;
 
     // Init / Shutdown //
 public:

@@ -45,7 +45,6 @@
 #include <string>
 //Lore
 #include "Lore_Utils.h"
-#include "Color.h"
 #include "Texture.h"
 
 
@@ -80,5 +79,3 @@ private:
 
 NS_LORE_END
 #endif // __Lore_include_Font_h__ //
-
-

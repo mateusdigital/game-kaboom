@@ -43,7 +43,6 @@
 //std
 #include <sys/types.h> //For stat(2)
 #include <sys/stat.h>  //For stat(2)
-#include <unistd.h>    //For stat(2)
 #include <errno.h>
 //Lore
 #include "../include/SDLHelpers.h"
@@ -54,6 +53,9 @@
 
 //Usings
 USING_NS_LORE;
+#include <filesystem>
+
+namespace fs = std::filesystem;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -71,7 +73,7 @@ void AssetsManager::initialize(const std::vector<std::string> &searchPaths)
         "Search Paths size: (%d)",
         searchPaths.size()
     );
-
+    
     for(auto path : searchPaths)
     {
         struct stat status;
@@ -83,7 +85,10 @@ void AssetsManager::initialize(const std::vector<std::string> &searchPaths)
             path.c_str()
         );
 
-        if(S_ISDIR(status.st_mode))
+        auto p = fs::current_path();
+        auto pp = p.assign("assets");
+
+        if(fs::is_directory(path))
         {
             PVT_LORE_DLOG_DEBUG(
                 "AssetsManager::initialize",

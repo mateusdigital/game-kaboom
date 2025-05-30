@@ -85,7 +85,7 @@ Texture::UPtr Font::prepareTexture(const std::string &str,
 
     auto tmp_surface = TTF_RenderText_Blended(m_pTTF_Font,
                                              str.c_str(),
-                                             SDLHelpers::make_color(fgColor));
+                                             fgColor);
 
     //COWTODO: In future add options to set other blend modes.
     SDL_SetSurfaceBlendMode(tmp_surface, SDL_BLENDMODE_BLEND);

@@ -43,74 +43,10 @@
 //Lore
 #include "../include/WindowManager.h"
 
-#include <unistd.h>
-
 //Usings
 USING_NS_LORE
 
 NS_LORE_BEGIN
-
-////////////////////////////////////////////////////////////////////////////////
-// Point                                                                      //
-////////////////////////////////////////////////////////////////////////////////
-SDL_Point SDLHelpers::make_point(int x, int y)
-{
-    return (SDL_Point){x, y};
-}
-
-SDL_Point SDLHelpers::make_point(const Vector2 &vector)
-{
-    return make_point(vector.x, vector.y);
-}
-
-SDL_Point SDLHelpers::make_point(const Rectangle &rect)
-{
-    return make_point(rect.getLocation());
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-// Rectangle                                                                  //
-////////////////////////////////////////////////////////////////////////////////
-SDL_Rect SDLHelpers::make_rect(int x, int y, int w, int h)
-{
-    return (SDL_Rect){x, y, w, h};
-}
-
-SDL_Rect SDLHelpers::make_rect(const Vector2 &pos, const Vector2 &size)
-{
-    return make_rect(pos.x, pos.y, size.x, size.y);
-}
-
-SDL_Rect SDLHelpers::make_rect(const Rectangle &rect)
-{
-    return make_rect(rect.getLocation(), rect.getSize());
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-// Color                                                                      //
-////////////////////////////////////////////////////////////////////////////////
-SDL_Color SDLHelpers::make_color(int r, int g, int b, int a /* = 255 */)
-{
-    //COWTODO: Check errors.
-    COREGAME_ASSERT_ARGS((
-        (r >= 0 && r <= 255) &&
-        (g >= 0 && g <= 255) &&
-        (b >= 0 && b <= 255) &&
-        (a >= 0 && a <= 255)),
-        "Color components are out of range: r:%d g:%d b:%d a:%d", r, g, b, a);
-
-
-    //Cast to make the compiler happy.
-    return (SDL_Color){ Uint8(r), Uint8(g), Uint8(b), Uint8(a) };
-}
-
-SDL_Color SDLHelpers::make_color(const Color &color)
-{
-    return make_color(color.r, color.g, color.b, color.a);
-}
-
 
 ////////////////////////////////////////////////////////////////////////////////
 // Texture                                                                    //

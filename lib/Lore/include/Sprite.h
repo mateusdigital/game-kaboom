@@ -45,10 +45,8 @@
 #include <string>
 //Lore
 #include "Lore_Utils.h"
-#include "Color.h"
 #include "IDrawable.h"
 #include "ITransformable.h"
-#include "Rectangle.h"
 #include "Texture.h"
 
 
@@ -64,7 +62,7 @@ public:
 public:
     Sprite();
     Sprite(const std::string &filename,
-           const Rectangle &srcRect = Rectangle::Empty());
+        const Rectangle& srcRect = {});
 
 
     // Public Methods //
@@ -87,12 +85,12 @@ public:
     //Texture
     Texture::SPtr getTexture() const;
     void setTexture(Texture::SPtr texture,
-                    const Rectangle &srcRect = Rectangle::Empty());
+                    const Rectangle &srcRect = {});
 
     void loadTexture(const std::string &filename,
-                     const Rectangle &srcRect = Rectangle::Empty());
+                     const Rectangle &srcRect = {});
 
-    void setSourceRectangle(const Rectangle &srcRect = Rectangle::Empty());
+    void setSourceRectangle(const Rectangle &srcRect = {});
     const Rectangle& getSourceRectangle() const;
 
     //Bounds
